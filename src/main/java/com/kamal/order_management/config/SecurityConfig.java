@@ -1,4 +1,4 @@
-package com.kamal.ordermanagement.config;
+package com.kamal.order_management.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
