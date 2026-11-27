@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: order_management
+      MYSQL_USER: orderuser
+      MYSQL_PASSWORD: Order@123
+      MYSQL_ROOT_PASSWORD: root
+    ports: ["3306:3306"]
+    volumes: [mysql-data:/var/lib/mysql]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 20
+
+  api:
+    build: .
+    depends_on:
+      mysql: { condition: service_healthy }
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/order_management?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USER: orderuser
+      DB_PASSWORD: Order@123
+      JWT_SECRET: ${JWT_SECRET:-replace-with-a-long-random-secret-at-least-32-bytes}
+      CORS_ORIGINS: http://localhost:3000
+    ports: ["8080:8080"]
+
+  web:
+    build: ./frontend
+    depends_on: [api]
+    environment:
+      API_URL: http://api:8080
+    ports: ["3000:3000"]
+
+volumes:
+  mysql-data:

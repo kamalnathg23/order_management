@@ -1,4 +1,4 @@
-package com.kamal.order_management.playground;
+package com.kamal.ordermanagement.playground;
 
 import com.kamal.order_management.model.Customer;
 import com.kamal.order_management.model.Order;
@@ -7,6 +7,7 @@ import com.kamal.order_management.service.InMemoryOrderService;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Phase1Demo {
     public static void main(String[] args) {
@@ -23,8 +24,10 @@ public class Phase1Demo {
 
         Order order = service.placeOrder(1L, cart);
         System.out.println("Order " + order.getId() + " total = " + order.getTotal());
+        System.out.println("Keyboard stock left = " + service.getProductsSortedByPrice().get(1).getStock());
 
         service.getProductsSortedByPrice().forEach(System.out::println);
         System.out.println(service.getOrdersByCustomer(1L).size() + " order(s) for customer 1");
+        
     }
 }
